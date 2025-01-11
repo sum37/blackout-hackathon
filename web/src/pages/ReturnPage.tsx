@@ -2,6 +2,7 @@ import "../styles/ReturnPage.css";
 import BackHeader from "../components/BackHeader";
 import TreeCard from "../components/TreeCard";
 import { useEffect, useState } from "react";
+import { getUser } from "../axios";
 
 const ReturnPage = () => {
   const time = 300;
@@ -14,6 +15,7 @@ const ReturnPage = () => {
 
   useEffect(() => {
     console.log("return page");
+    getUser("1");
     setTimeout(() => {
       setPoints(prev => prev += new_points);
     }, 1000);
