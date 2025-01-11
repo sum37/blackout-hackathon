@@ -77,6 +77,7 @@ export interface EndDrivingResponse {
   drive: DrivingSession;
   parking_space: string;
   tree_exp_update: number;
+  tree_id: number;
 }
 
 export interface Prediction {

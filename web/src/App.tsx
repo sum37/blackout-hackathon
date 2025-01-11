@@ -32,7 +32,6 @@ function App() {
           <Route path="/my-pine" element={<PinePage />} />
           <Route path="/my-cherryblossom" element={<CherryPage />} />
           <Route path="/my-maple" element={<MaplePage />} />
-          <Route path="/webcam" element={<WebcamPage size={size} />} />
           <Route path="/return" element={<ReturnPage />} />
         </Routes>
       </Router>
