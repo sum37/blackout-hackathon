@@ -10,7 +10,14 @@ router = APIRouter(
 )
 
 @router.post("/")
-def plant_nutrient(x: float, y: float, planted_by: int, nutrient_type: str, db: Session = Depends(get_db)):
+def plant_nutrient(
+    x: float,
+    y: float,
+    planted_by: int,
+    nutrient_type: str,
+    is_drained: bool = False,  # New input parameter
+    db: Session = Depends(get_db)
+):
     # Check for active driving session
     active_drive = db.query(Driving).filter(
         Driving.driver_id == planted_by,
@@ -21,7 +28,7 @@ def plant_nutrient(x: float, y: float, planted_by: int, nutrient_type: str, db: 
         raise HTTPException(status_code=400, detail="No active driving session for this user.")
 
     # Update nutrient_fail or nutrient_success
-    if nutrient_type == "broken":
+    if is_drained:
         active_drive.nutrient_fail += 1
     else:
         active_drive.nutrient_success += 1
@@ -34,7 +41,8 @@ def plant_nutrient(x: float, y: float, planted_by: int, nutrient_type: str, db: 
         planted_x=x,
         planted_y=y,
         planted_by=planted_by,
-        nutrient_type=nutrient_type
+        nutrient_type=nutrient_type,
+        is_drained=is_drained  # Save the is_drained value
     )
     db.add(nutrient)
     db.commit()
