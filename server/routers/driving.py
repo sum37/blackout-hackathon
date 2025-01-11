@@ -109,6 +109,7 @@ def end_driving(
         db.add(tree)
 
     db.commit()
+    db.refresh(tree)  # Refresh to ensure we have the latest tree data
 
     return {
         "message": "Driving session ended successfully.",
@@ -120,7 +121,8 @@ def end_driving(
             "progress": drive.progress
         },
         "parking_space": "Valid parking space" if parking_space else "No parking space",
-        "tree_exp_updated": tree_exp_updated
+        "tree_exp_updated": tree_exp_updated,
+        "tree_id": tree.id  # Added tree ID to the response
     }
 
 

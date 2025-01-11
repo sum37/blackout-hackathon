@@ -1,0 +1,22 @@
+.tree-shortcut-container {
+    display: flex;
+    justify-content: space-between; /* 자식 요소를 균일한 간격으로 배치 */
+    align-items: center;
+    height: 100%; /* 컨테이너 전체 높이 */
+    width: 100%; /* 컨테이너 전체 너비 */
+    padding: 0 10px; /* 좌우 여백 추가 (선택 사항) */
+  }
+  
+  .tree-shortcut {
+    width: 25%; /* 각 트리의 너비를 균일하게 설정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .tree-shortcut-image {
+    width: 100%; /* 각 이미지가 부모 너비에 맞게 설정 */
+    height: auto; /* 비율 유지하며 높이 조정 */
+    object-fit: contain;
+  }
+  
