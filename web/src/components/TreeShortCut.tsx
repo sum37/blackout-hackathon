@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/TreeShortCut.css";
-import axios from "axios";
+import { getTreesByUser } from "../axios";
 
 import bamboo1 from "../assets/bamboo_1.png";
 import bamboo2 from "../assets/bamboo_2.png";
@@ -22,15 +22,20 @@ import pine2 from "../assets/pine_2.png";
 import pine3 from "../assets/pine_3.png";
 import pine4 from "../assets/pine_4.png";
 
+interface TreeInfo {
+  tree_type: string;
+  exp: number;
+}
+
 const TreeShortCut = () => {
-  const [trees, setTrees] = useState<{ tree_type: string; exp: number }[]>([]);
+  const [trees, setTrees] = useState<TreeInfo[]>([]);
 
   const getStageText = (progress: number): string => {
     if (progress >= 0 && progress < 250) return "1단계";
     if (progress >= 250 && progress < 500) return "2단계";
     if (progress >= 500 && progress < 750) return "3단계";
     if (progress >= 750 && progress <= 1000) return "4단계";
-    return "1단계"; // 안전 장치
+    return "1단계";
   };
 
   const getImagePath = (stage: string, tree_type: string): string => {
@@ -46,7 +51,7 @@ const TreeShortCut = () => {
           case "4단계":
             return bamboo4;
           default:
-            return bamboo1; // 기본 이미지
+            return bamboo1;
         }
       case "cherryblossom":
         switch (stage) {
@@ -59,7 +64,7 @@ const TreeShortCut = () => {
           case "4단계":
             return cherryblossom4;
           default:
-            return cherryblossom1; // 기본 이미지
+            return cherryblossom1;
         }
       case "pine":
         switch (stage) {
@@ -72,7 +77,7 @@ const TreeShortCut = () => {
           case "4단계":
             return pine4;
           default:
-            return pine1; // 기본 이미지
+            return pine1;
         }
       case "maple":
         switch (stage) {
@@ -85,22 +90,25 @@ const TreeShortCut = () => {
           case "4단계":
             return maple4;
           default:
-            return maple1; // 기본 이미지
+            return maple1;
         }
       default:
-        return "../assets/default.png"; // 기본 이미지
+        return "../assets/default.png";
     }
   };
 
   useEffect(() => {
     const fetchTreeData = async () => {
       try {
-        const response = await axios.get("http://ec2-54-208-212-70.compute-1.amazonaws.com:8000/trees/user/1");
+        const response = await getTreesByUser(1); // Replace '1' with the actual user ID
         const treesData = response.data;
 
         // 특정 tree_type만 필터링
         const filteredTrees = ["bamboo", "cherryblossom", "maple", "pine"].map((type) =>
-          treesData.find((tree: { tree_type: string }) => tree.tree_type === type) || { tree_type: type, exp: 0 }
+          treesData.find((tree: TreeInfo) => tree.tree_type === type) || {
+            tree_type: type,
+            exp: 0,
+          }
         );
 
         setTrees(filteredTrees);
@@ -119,8 +127,9 @@ const TreeShortCut = () => {
           <img
             className="tree-shortcut-image"
             alt={tree.tree_type}
-            src={getImagePath(getStageText(tree.exp), tree.tree_type)} // tree_type과 단계에 따라 이미지 결정
+            src={getImagePath(getStageText(tree.exp), tree.tree_type)}
           />
+          <div className="tree-exp">EXP: {tree.exp}</div>
         </div>
       ))}
     </div>
