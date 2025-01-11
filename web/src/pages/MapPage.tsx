@@ -5,8 +5,9 @@ import { LatLng } from "../types";
 
 const MapPage = () => {
   const [appropriatePlaces, setAppropriatePlaces] = useState<LatLng[]>([
-    { lat: 37.502, lng: 127.039 },
+    { lat: 37.504, lng: 127.042 },
   ]); //TODO: For Test
+  const [seeds, setSeeds] = useState<LatLng[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
 
   const displayMarker = (map: kakao.maps.Map, loc: LatLng) => {
@@ -16,19 +17,18 @@ const MapPage = () => {
     const position = new window.kakao.maps.LatLng(loc.lat, loc.lng);
 
     const imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지의 주소입니다
-      imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
+      imageSize = new kakao.maps.Size(64, 69),
       imageOption = {
         offset: new kakao.maps.Point(27, 69),
-      }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      };
 
-    // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
     const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
     // 마커를 생성합니다
     const marker = new kakao.maps.Marker({
       position,
-      image, // 마커이미지 설정,
+      image,
       opacity: 0.5,
     });
 
@@ -55,30 +55,49 @@ const MapPage = () => {
     appropriatePlaces.forEach((pos) => {
       displayMarker(map, pos);
     });
+
+    const interval = setInterval(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+
+          const newPlace = { lat, lng };
+
+          console.log(newPlace);
+          displayMarker(map, newPlace);
+          setSeeds((prevPlaces) => {
+            return [...prevPlaces, newPlace];
+          });
+        });
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [map]);
 
   const initMap = () => {
-    let lat = 37.5035513;
-    let lon = 127.0415171;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
-        lat = pos.coords.latitude;
-        lon = pos.coords.longitude;
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        console.log(pos.coords.latitude);
+        console.log(pos.coords.longitude);
+
+        const container = document.getElementById("map");
+        if (!container) {
+          return;
+        }
+
+        const curPos = new window.kakao.maps.LatLng(lat, lon);
+        const options = {
+          center: curPos,
+          level: 3,
+        };
+        const map = new window.kakao.maps.Map(container, options);
+        setMap(map);
       });
     }
-
-    const container = document.getElementById("map");
-    if (!container) {
-      return;
-    }
-
-    const curPos = new window.kakao.maps.LatLng(lat, lon);
-    const options = {
-      center: curPos,
-      level: 3,
-    };
-    const map = new window.kakao.maps.Map(container, options);
-    setMap(map);
   };
 
   useEffect(() => {
