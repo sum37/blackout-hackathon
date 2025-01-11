@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -16,6 +16,7 @@ class Tree(Base):
     tree_type = Column(String)
     owner = relationship("User", back_populates="trees")
 
+
 class Nutrient(Base):
     __tablename__ = "nutrients"
     id = Column(Integer, primary_key=True, index=True)
@@ -23,7 +24,8 @@ class Nutrient(Base):
     planted_x = Column(Float)
     planted_y = Column(Float)
     planted_by = Column(Integer, ForeignKey("users.id"))
-    nutrient_type = Column(String)  # Dead or Alive
+    nutrient_type = Column(String)  
+    is_drained = Column(Boolean, default=False) # Dead or Alive
 
 class ParkingSpace(Base):
     __tablename__ = "parking_spaces"
