@@ -93,7 +93,7 @@
 .ride-button {
   background-color: white;
   position: absolute;
-  left: 16px;
+  left: 32px;
   bottom: 32px;
   z-index: 3;
   font-size: 32px;

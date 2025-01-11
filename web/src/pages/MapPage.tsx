@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import WebcamContainer, { WebcamContainerRef } from "../components/WebcamContainer";
 
 const getFlowerImage = (flowerName: string, is_drained: boolean) => {
-  return `http://ec2-54-208-212-70.compute-1.amazonaws.com:8000/static/images/${flowerName}_${is_drained ? 1 : 0}.png`
+  return `https://c87c-210-207-40-218.ngrok-free.app/static/images/${flowerName}_${is_drained ? 1 : 0}.png`
 };
 
 const MapPage = () => {
@@ -249,9 +249,10 @@ const MapPage = () => {
 
       endDriving({user_id: user,
         x: lat,
-        y: lon}).then(() => {
+        y: lon}).then((res) => {
+          const {tree_id, exp} = res.data;
           setIsDriving(false);
-          navigate("/return"); //TODO:
+          navigate("/return", {state: {time: 800, price: 400, treeId: tree_id, treeExpUpdate: exp}});
         })
     });
   };

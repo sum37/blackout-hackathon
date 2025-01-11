@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { CreateNutrientRequest, CreateNutrientResponse, CreateTreeRequest, CreateUserRequest, CreateUserResponse, DrivingSession, EndDrivingResponse, HelmetDetectionResponse, Nutrient, ParkingSpace, PostDrivingDataRequest, PostEndDrivingRequest, PostParkingSpaceRequest, Tree, User } from "./types";
+import { CreateNutrientRequest, CreateNutrientResponse, CreateTreeRequest, CreateUserRequest, CreateUserResponse, DrivingSession, EndDrivingResponse, HelmetDetectionResponse, Nutrient, ParkingSpace, PostEndDrivingRequest, PostParkingSpaceRequest, Tree, User } from "./types";
 
 const client = axios.create({
-    baseURL: 'http://ec2-54-208-212-70.compute-1.amazonaws.com:8000/',  // Set this to your FastAPI server URL
+    baseURL: 'https://c87c-210-207-40-218.ngrok-free.app',  // Set this to your FastAPI server URL
     withCredentials: true,  // Include credentials in requests (useful for cookies or sessions)
     headers: {
-        'Access-Control-Allow-Credentials': true,  // Allow credentials to be passed in cross-origin requests
+        'Access-Control-Allow-Credentials': true,
+        'ngrok-skip-browser-warning': true,  // Allow credentials to be passed in cross-origin requests
     },
 });
 

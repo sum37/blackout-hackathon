@@ -1,13 +1,14 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 
 #main-screen {
-  width: 393px;
-  height: 852px;
+  max-width: 430px;
+  width: 100vw;
+  height: 100vh;
   position: relative;
   background-color: white;
   overflow: hidden;

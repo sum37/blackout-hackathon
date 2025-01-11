@@ -2,23 +2,37 @@ import "../styles/ReturnPage.css";
 import BackHeader from "../components/BackHeader";
 import TreeCard from "../components/TreeCard";
 import { useEffect, useState } from "react";
-import { getUser } from "../axios";
+import { getTree } from "../axios";
+import { useLocation } from "react-router-dom";
+
+interface State {
+  time: number;
+  price: number;
+  treeId: number;
+  treeExpUpdate: number;
+}
 
 const ReturnPage = () => {
-  const time = 300;
-  const price = 840;
-  const current_points = 400;
-  const new_points = 300;
+  const location = useLocation();
+  const { state } = location;
+  const { time, price, treeId, treeExpUpdate } = state as State;
+
   const total_points = 1000;
 
-  const [points, setPoints] = useState(current_points);
+  const [points, setPoints] = useState<number | null>(null);
+  const [treeType, setTreeType] = useState<string | null>(null);
 
   useEffect(() => {
     console.log("return page");
-    getUser("1");
-    setTimeout(() => {
-      setPoints(prev => prev += new_points);
-    }, 1000);
+    getTree(treeId).then((res) => {
+      const r = res.data.exp;
+      setPoints(r - treeExpUpdate);
+      setTreeType(res.data.tree_type);
+
+      setTimeout(() => {
+        setPoints(r);
+      }, 3000);
+    }).catch((e) => console.log(e));
   }, []);
 
   console.log(points);
@@ -36,7 +50,10 @@ const ReturnPage = () => {
     <div className="return-page">
       <BackHeader />
       <div className="sub-title tree-page-title">주행이 종료되었습니다.</div>
-      <TreeCard progress={points * 100 / total_points} />
+      {
+        treeType !== null && points !== null &&
+          <TreeCard treeType={treeType} progress={points * 100 / total_points} />
+      }
       <div className="return-container">
         <div className="return-row">
           <span>주행 시간</span>
@@ -48,7 +65,7 @@ const ReturnPage = () => {
         </div>
         <div className="return-row">
           <span>적립된 포인트</span>
-          <span className="return-value">{points}</span>
+          <span className="return-value">{treeExpUpdate}</span>
         </div>
       </div>
 
