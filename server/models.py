@@ -42,3 +42,4 @@ class Driving(Base):
     progress = Column(String, default="in_progress")
     nutrient_success = Column(Integer, default=0)  # Count of nutrients that are not broken
     nutrient_fail = Column(Integer, default=0)     # Count of nutrients that are broken
+    tree_type = Column(String, nullable=True)
