@@ -1,0 +1,58 @@
+.detail-card-container {
+    display: flex; /* 플렉스박스 설정 */
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: center; /* 세로 가운데 정렬 */
+    align-items: center; /* 가로 가운데 정렬 */
+    width: 80%; /* 컨테이너의 너비 */
+    height: 60%; /* 컨테이너의 높이 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 정확히 가운데 정렬 */
+    padding: 20px;
+  }
+  
+  .detail-tree-image {
+    width: 80%; /* 컨테이너의 80% 너비 */
+    height: 250px;
+    border: 2px solid #007bff; /* 파란색 테두리 */
+    border-radius: 10px;
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-bottom: 80px; /* 하단 여백 */
+  }
+
+  .detail-stage-text {
+    font-size: 18px; /* 텍스트 크기 */
+    font-weight: bold; /* 굵게 표시 */
+    color: #333; /* 어두운 회색 */
+    margin-bottom: 20px; /* 프로그레스 바와 간격 */
+    text-align: center;
+  }
+  
+  .detail-progress-container {
+    width: 80%; /* 컨테이너의 80% 너비 */
+    height: 50px; /* 프로그레스 바 높이 */
+    background-color: #e0e0e0; /* 프로그레스 바 배경 */
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .detail-progress-fill {
+    height: 100%;
+    background-color: #4caf50; /* 초록색 진행 표시 */
+    transition: width 0.3s ease; /* 애니메이션 */
+  }
+
+  .detail-progress-labels {
+    display: flex;
+    justify-content: space-between; /* 라벨들을 균등 분배 */
+    width: 80%; /* 프로그레스 바와 동일한 너비 */
+    margin-top: 10px; /* 프로그레스 바와 간격 */
+  }
+  
+  .detail-progress-labels span {
+    font-size: 14px; /* 라벨 글꼴 크기 */
+    color: #000; /* 라벨 글꼴 색상 */
+  }
+  
