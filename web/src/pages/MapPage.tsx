@@ -14,12 +14,23 @@ const getFlowerImage = (flowerName: string, is_drained: boolean) => {
 const MapPage = () => {
   const user = useUser();
   const navigate = useNavigate();
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
   
   const [appropriatePlaces, setAppropriatePlaces] = useState<ParkingSpace[]>();
   const [seeds, setSeeds] = useState<Nutrient[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [isDriving, setIsDriving] = useState(false);
   const [isWearingHelmet, setIsWearingHelmet] = useState(true);
+
+  const [time, setTime] = useState(0);
+  const [price, setPrice] = useState(0);
   
   const webcamRef = useRef<WebcamContainerRef>(null);
 
@@ -144,7 +155,16 @@ const MapPage = () => {
     if (!isDriving) {
       return;
     }
-    const interval = setInterval(() => {
+
+    const interval1 = setInterval(() => {
+      setTime((prevCount) => prevCount + 1);
+    }, 1000);
+
+    const interval3  = setInterval(() => {
+      setPrice((prev) => prev + 50);
+    }, 5000);
+
+    const interval2 = setInterval(() => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
           const lat = pos.coords.latitude;
@@ -175,7 +195,11 @@ const MapPage = () => {
       }
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+      clearInterval(interval3);
+    }
   }, [isDriving]);
 
   const handleStartRide = () => {
@@ -252,7 +276,7 @@ const MapPage = () => {
         y: lon}).then((res) => {
           const {tree_id, exp} = res.data;
           setIsDriving(false);
-          navigate("/return", {state: {time: 800, price: 400, treeId: tree_id, treeExpUpdate: exp}});
+          navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: exp}});
         })
     });
   };
@@ -290,11 +314,20 @@ const MapPage = () => {
           <WebcamContainer ref={webcamRef} size={{width: 124, height: 135}} />
         </div>
             <div className="content-section">
-              <ul className="details">
-                <li>주행시간</li>
-                <li>영양</li>
-                <li>금액</li>
-              </ul>
+            <div className="return-container">
+              <div className="return-row">
+                <span>주행 시간</span>
+                <span className="return-value">{formatTime(time)}</span>
+              </div>
+              <div className="return-row">
+                <span>금액</span>
+                <span className="return-value">{`${price} 원`}</span>
+              </div>
+              <div className="return-row">
+                <span>적립된 포인트</span>
+                <span className="return-value">{3}</span>
+              </div>
+            </div>
               <button onClick={handleReturnClick} className="return-button">
                 반납하기
               </button>

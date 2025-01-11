@@ -102,6 +102,7 @@
   width: calc(100% - 64px);
   border-radius: 20px;
   height: 94px;
+  border: none;
 }
 
 .ride-button:hover {
@@ -117,4 +118,5 @@
 
 video {
   z-index: 0;
+  border-radius: 24px;
 }

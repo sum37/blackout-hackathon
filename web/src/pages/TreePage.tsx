@@ -10,7 +10,7 @@ const TreePage = () => {
       <div className="cards-container">
         <TreeCard treeType="bamboo" progress={30} />
         <TreeCard treeType="maple" progress={50} />
-        <TreeCard treeType="cherryBlossom" progress={80} />
+        <TreeCard treeType="cherryblossom" progress={80} />
         <TreeCard treeType="pine" progress={100} />
       </div>
     </>
