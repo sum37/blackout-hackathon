@@ -1,4 +1,5 @@
 import "./styles/App.css";
+import MainPage from "./pages/MainPage";
 import MapPage from "./pages/MapPage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import TreePage from "./pages/TreePage";
@@ -25,7 +26,7 @@ function App() {
     <div ref={screenRef} id="main-screen">
       <Router>
         <Routes>
-          <Route path="/" element={<MapPage />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/maps" element={<MapPage />} />
           <Route path="/my-trees" element={<TreePage />} />
           <Route path="/my-bamboo" element={<BambooPage />} />
