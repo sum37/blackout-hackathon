@@ -1,9 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from database import engine
 from models import Base
 from routers import users, nutrients, trees, driving, parking_spaces, helmet_detection
 
 app = FastAPI()
+
+# Set up CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace "*" with specific origins for better security
+    allow_credentials=True,
+    allow_methods=["*"],  # Or specify allowed methods, e.g., ["GET", "POST"]
+    allow_headers=["*"],  # Or specify allowed headers, e.g., ["Authorization", "Content-Type"]
+)
 
 # Create all database tables
 Base.metadata.create_all(bind=engine)
