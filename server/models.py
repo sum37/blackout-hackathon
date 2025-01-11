@@ -28,7 +28,6 @@ class Nutrient(Base):
 class ParkingSpace(Base):
     __tablename__ = "parking_spaces"
     id = Column(Integer, primary_key=True, index=True)
-    parking_type = Column(String, index=True)
     center_x = Column(Float)  # Center X-coordinate
     center_y = Column(Float)  # Center Y-coordinate
     width = Column(Float)     # Width of the parking space
