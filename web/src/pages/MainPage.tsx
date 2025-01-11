@@ -5,7 +5,7 @@ import TreeShortCut from "../components/TreeShortCut";
 import Header from "../components/Header";
 
 const MainPage = () => {
-  const [map, setMap] = useState<kakao.maps.Map | null>(null);
+  const [, setMap] = useState<kakao.maps.Map | null>(null);
   const navigate = useNavigate(); // 페이지 이동 훅
 
   const initMap = () => {

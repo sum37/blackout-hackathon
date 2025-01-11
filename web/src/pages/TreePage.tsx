@@ -8,10 +8,10 @@ const TreePage = () => {
       <BackHeader />
       <div className="sub-title tree-page-title">나의 나무 도감</div>
       <div className="cards-container">
-        <TreeCard progress={30} />
-        <TreeCard progress={50} />
-        <TreeCard progress={80} />
-        <TreeCard progress={100} />
+        <TreeCard treeType="bamboo" progress={30} />
+        <TreeCard treeType="maple" progress={50} />
+        <TreeCard treeType="cherryBlossom" progress={80} />
+        <TreeCard treeType="pine" progress={100} />
       </div>
     </>
   );
