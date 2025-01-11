@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from database import engine
 from models import Base
-from routers import users, nutrients, trees, driving, parking_spaces
+from routers import users, nutrients, trees, driving, parking_spaces, helmet_detection
 
 app = FastAPI()
 
@@ -14,3 +14,4 @@ app.include_router(nutrients.router)
 app.include_router(trees.router)
 app.include_router(driving.router)
 app.include_router(parking_spaces.router)
+app.include_router(helmet_detection.router)

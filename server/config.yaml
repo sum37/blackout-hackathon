@@ -1,0 +1,6 @@
+path: D:\blackout-hackathon\server\datasets\processed
+train: train/images
+val: val/images
+names:
+  0: without helmet
+  1: with helmet
