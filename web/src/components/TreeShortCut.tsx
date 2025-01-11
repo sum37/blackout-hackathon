@@ -26,10 +26,10 @@ const TreeShortCut = () => {
   const [trees, setTrees] = useState<{ tree_type: string; exp: number }[]>([]);
 
   const getStageText = (progress: number): string => {
-    if (progress >= 0 && progress < 25) return "1단계";
-    if (progress >= 25 && progress < 50) return "2단계";
-    if (progress >= 50 && progress < 75) return "3단계";
-    if (progress >= 75 && progress <= 100) return "4단계";
+    if (progress >= 0 && progress < 250) return "1단계";
+    if (progress >= 250 && progress < 500) return "2단계";
+    if (progress >= 500 && progress < 750) return "3단계";
+    if (progress >= 750 && progress <= 1000) return "4단계";
     return "1단계"; // 안전 장치
   };
 
