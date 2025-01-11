@@ -29,23 +29,24 @@ def get_season():
 
 
 @router.post("/")
-def create_tree(owner_id: int, db: Session = Depends(get_db)):
+def create_tree(owner_id: int, tree_type: str = "cherryblossom", db: Session = Depends(get_db)):
     """
-    Create a tree for a user based on the current season.
+    Create a tree for a user with a specific type.
 
     Args:
         owner_id (int): ID of the tree owner.
+        tree_type (str): Type of the tree (e.g., cherryblossom, pine, maple, bamboo).
         db (Session): Database session dependency.
 
     Returns:
         Tree: The created tree record.
     """
-    tree_type = get_season()
     tree = Tree(owner_id=owner_id, tree_type=tree_type)
     db.add(tree)
     db.commit()
     db.refresh(tree)
     return tree
+
 
 @router.get("/{tree_id}")
 def get_tree(tree_id: int, db: Session = Depends(get_db)):

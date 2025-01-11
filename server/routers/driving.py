@@ -3,28 +3,12 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import Driving, ParkingSpace, Tree
 from datetime import datetime
+from random import choice
 
 router = APIRouter(
     prefix="/driving",
     tags=["driving"]
 )
-
-def get_season():
-    """
-    Determine the season based on the current month.
-
-    Returns:
-        str: The season ("Spring", "Summer", "Fall", "Winter").
-    """
-    month = datetime.utcnow().month
-    if 3 <= month <= 5:
-        return "Spring"
-    elif 6 <= month <= 8:
-        return "Summer"
-    elif 9 <= month <= 11:
-        return "Fall"
-    else:
-        return "Winter"
 
 @router.post("/")
 def start_driving(driver_id: int, db: Session = Depends(get_db)):
@@ -46,12 +30,16 @@ def start_driving(driver_id: int, db: Session = Depends(get_db)):
     if active_drive:
         raise HTTPException(status_code=400, detail="An active driving session already exists.")
 
+    # Assign a random tree type
+    tree_type = choice(["cherryblossom", "pine", "maple", "bamboo"])
+
     # Start a new driving session
-    drive = Driving(driver_id=driver_id, progress="in_progress")
+    drive = Driving(driver_id=driver_id, progress="in_progress", tree_type=tree_type)
     db.add(drive)
     db.commit()
     db.refresh(drive)
     return drive
+
 
 @router.patch("/end")
 def end_driving(
@@ -93,33 +81,34 @@ def end_driving(
     ).first()
 
     tree_exp_updated = 0
+    tree_type = drive.tree_type  # Use the tree type assigned to the active drive
+
+    # Handle cases based on parking space presence and nutrient success
     if parking_space:
-        # Determine the current season
-        tree_type = get_season()
-
-        # Check if the user already has a tree for the current season
-        tree = db.query(Tree).filter(
-            Tree.owner_id == user_id,
-            Tree.tree_type == tree_type
-        ).first()
-
-        # Calculate experience based on parking success or failure
-        if drive.nutrient_success > 0:  # Parking success with nutrients
+        # Parking space is valid
+        if drive.nutrient_success > 0:
             tree_exp_updated = drive.nutrient_success + 100
-        elif drive.nutrient_success == 0:  # Parking success but no nutrients
-            tree_exp_updated = 50
-        else:  # Parking fail
-            tree_exp_updated = drive.nutrient_success / 2
-
-        if tree:
-            # Update existing tree's experience
-            tree.exp += tree_exp_updated
         else:
-            # Create a new tree for the season with the calculated experience
-            tree = Tree(owner_id=user_id, tree_type=tree_type, exp=tree_exp_updated)
-            db.add(tree)
+            tree_exp_updated = 50  # No nutrients planted, flat bonus
+    elif drive.nutrient_success > 0:
+        # No parking space but nutrient_success > 0
+        tree_exp_updated = drive.nutrient_success / 2
 
-        db.commit()
+    # Check if a tree of this type exists
+    tree = db.query(Tree).filter(
+        Tree.owner_id == user_id,
+        Tree.tree_type == tree_type
+    ).first()
+
+    if tree:
+        # Update existing tree's experience
+        tree.exp += tree_exp_updated
+    else:
+        # Create a new tree regardless of tree_exp_updated
+        tree = Tree(owner_id=user_id, tree_type=tree_type, exp=tree_exp_updated)
+        db.add(tree)
+
+    db.commit()
 
     return {
         "message": "Driving session ended successfully.",
