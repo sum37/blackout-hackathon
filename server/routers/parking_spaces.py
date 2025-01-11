@@ -10,7 +10,6 @@ router = APIRouter(
 
 @router.post("/")
 def create_parking_space(
-    parking_type: str,
     x: float,  # Center X-coordinate
     y: float,  # Center Y-coordinate
     width: float,
@@ -31,7 +30,6 @@ def create_parking_space(
         ParkingSpace: The created parking space record.
     """
     parking_space = ParkingSpace(
-        parking_type=parking_type,
         center_x=x,
         center_y=y,
         width=width,

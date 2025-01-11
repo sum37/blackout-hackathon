@@ -2,14 +2,42 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Driving, ParkingSpace, Tree
+from datetime import datetime
 
 router = APIRouter(
     prefix="/driving",
     tags=["driving"]
 )
 
+def get_season():
+    """
+    Determine the season based on the current month.
+
+    Returns:
+        str: The season ("Spring", "Summer", "Fall", "Winter").
+    """
+    month = datetime.utcnow().month
+    if 3 <= month <= 5:
+        return "Spring"
+    elif 6 <= month <= 8:
+        return "Summer"
+    elif 9 <= month <= 11:
+        return "Fall"
+    else:
+        return "Winter"
+
 @router.post("/")
 def start_driving(driver_id: int, db: Session = Depends(get_db)):
+    """
+    Start a new driving session for the user.
+
+    Args:
+        driver_id (int): ID of the user starting the drive.
+        db (Session): Database session dependency.
+
+    Returns:
+        Driving: The started driving session.
+    """
     # Check for active driving session
     active_drive = db.query(Driving).filter(
         Driving.driver_id == driver_id,
@@ -24,7 +52,6 @@ def start_driving(driver_id: int, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(drive)
     return drive
-
 
 @router.patch("/end")
 def end_driving(
@@ -65,22 +92,31 @@ def end_driving(
         (y <= ParkingSpace.center_y + ParkingSpace.height / 2)
     ).first()
 
+    tree_exp_updated = 0
     if parking_space:
-        # Get the parking space's tree type
-        tree_type = parking_space.parking_type
+        # Determine the current season
+        tree_type = get_season()
 
-        # Check if the user already has a tree of this type
+        # Check if the user already has a tree for the current season
         tree = db.query(Tree).filter(
             Tree.owner_id == user_id,
             Tree.tree_type == tree_type
         ).first()
 
+        # Calculate experience based on parking success or failure
+        if drive.nutrient_success > 0:  # Parking success with nutrients
+            tree_exp_updated = drive.nutrient_success + 100
+        elif drive.nutrient_success == 0:  # Parking success but no nutrients
+            tree_exp_updated = 50
+        else:  # Parking fail
+            tree_exp_updated = drive.nutrient_success / 2
+
         if tree:
-            # Increment the tree's experience
-            tree.exp += drive.nutrient_success
+            # Update existing tree's experience
+            tree.exp += tree_exp_updated
         else:
-            # Create a new tree with the nutrient success experience
-            tree = Tree(owner_id=user_id, tree_type=tree_type, exp=drive.nutrient_success)
+            # Create a new tree for the season with the calculated experience
+            tree = Tree(owner_id=user_id, tree_type=tree_type, exp=tree_exp_updated)
             db.add(tree)
 
         db.commit()
@@ -94,18 +130,36 @@ def end_driving(
             "nutrient_fail": drive.nutrient_fail,
             "progress": drive.progress
         },
-        "parking_space": parking_space.parking_type if parking_space else "No parking space",
-        "tree_exp_updated": drive.nutrient_success if parking_space else 0
+        "parking_space": "Valid parking space" if parking_space else "No parking space",
+        "tree_exp_updated": tree_exp_updated
     }
+
 
 @router.get("/")
 def get_all_driving_sessions(db: Session = Depends(get_db)):
-    # Fetch all driving sessions
+    """
+    Get all driving sessions.
+
+    Args:
+        db (Session): Database session dependency.
+
+    Returns:
+        List[Driving]: A list of all driving sessions.
+    """
     drives = db.query(Driving).all()
     return drives
 
 @router.get("/user/{driver_id}")
 def get_user_driving_sessions(driver_id: int, db: Session = Depends(get_db)):
-    # Fetch all driving sessions for a specific user
+    """
+    Get all driving sessions for a specific user.
+
+    Args:
+        driver_id (int): ID of the user.
+        db (Session): Database session dependency.
+
+    Returns:
+        List[Driving]: A list of all driving sessions for the user.
+    """
     drives = db.query(Driving).filter(Driving.driver_id == driver_id).all()
     return drives
