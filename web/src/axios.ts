@@ -19,7 +19,7 @@ const getUser = async (userId: string): Promise<AxiosResponse<User>> => {
 
 // Nutrients API
 const postNutrient = async (data: CreateNutrientRequest): Promise<AxiosResponse<CreateNutrientRequest>> => {
-    return client.post("/nutrients", null, {params: data});
+    return client.post("/nutrients", data);
 };
 
 const getNutrients = async (): Promise<AxiosResponse<Nutrient[]>> => {
