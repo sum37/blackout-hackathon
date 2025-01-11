@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { CreateNutrientRequest, CreateTreeRequest, CreateUserRequest, CreateUserResponse, DrivingSession, EndDrivingResponse, HelmetDetectionResponse, Nutrient, ParkingSpace, PostDrivingDataRequest, PostEndDrivingRequest, PostParkingSpaceRequest, Tree, User } from "./types";
+import { CreateNutrientRequest, CreateNutrientResponse, CreateTreeRequest, CreateUserRequest, CreateUserResponse, DrivingSession, EndDrivingResponse, HelmetDetectionResponse, Nutrient, ParkingSpace, PostEndDrivingRequest, PostParkingSpaceRequest, Tree, User } from "./types";
 
 const client = axios.create({
-    baseURL: 'http://ec2-54-208-212-70.compute-1.amazonaws.com:8000/',  // Set this to your FastAPI server URL
+    baseURL: 'https://c87c-210-207-40-218.ngrok-free.app',  // Set this to your FastAPI server URL
     withCredentials: true,  // Include credentials in requests (useful for cookies or sessions)
     headers: {
-        'Access-Control-Allow-Credentials': true,  // Allow credentials to be passed in cross-origin requests
+        'Access-Control-Allow-Credentials': true,
+        'ngrok-skip-browser-warning': true,  // Allow credentials to be passed in cross-origin requests
     },
 });
 
@@ -18,8 +19,8 @@ const getUser = async (userId: string): Promise<AxiosResponse<User>> => {
 };
 
 // Nutrients API
-const postNutrient = async (data: CreateNutrientRequest): Promise<AxiosResponse<CreateNutrientRequest>> => {
-    return client.post("/nutrients", data);
+const postNutrient = async (data: CreateNutrientRequest): Promise<AxiosResponse<CreateNutrientResponse>> => {
+    return client.post("/nutrients", null, {params: data});
 };
 
 const getNutrients = async (): Promise<AxiosResponse<Nutrient[]>> => {
@@ -45,15 +46,15 @@ const getDrivingData = async (): Promise<AxiosResponse<DrivingSession[]>> => {
 };
 
 const getDrivingDataByUser = async (driver_id: number): Promise<AxiosResponse<DrivingSession[]>> => {
-    return client.get(`/driving/${driver_id}`);
+    return client.get(`/driving/user/${driver_id}`);
 };
 
-const startDriving = async (driver_id: string): Promise<AxiosResponse<EndDrivingResponse>> => {
-    return client.post("/driving", {driver_id});
+const startDriving = async (driver_id: number): Promise<AxiosResponse<EndDrivingResponse>> => {
+    return client.post("/driving", null, {params: {driver_id}});
 };
 
-const endDriving = async (data: PostEndDrivingRequest): Promise<AxiosResponse<DrivingData>> => {
-    return client.patch("/driving/end", data);
+const endDriving = async (data: PostEndDrivingRequest): Promise<AxiosResponse<EndDrivingResponse>> => {
+    return client.patch("/driving/end", null, {params: data});
 };
 
 const postParkingSpace = async (data: PostParkingSpaceRequest): Promise<AxiosResponse<ParkingSpace>> => {

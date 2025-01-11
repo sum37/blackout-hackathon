@@ -1,9 +1,8 @@
 import "./styles/App.css";
 import MainPage from "./pages/MainPage";
 import MapPage from "./pages/MapPage";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import TreePage from "./pages/TreePage";
-import WebcamPage from "./pages/WebcamPage";
 import ReturnPage from "./pages/ReturnPage";
 import BambooPage from "./pages/BambooPage";
 import PinePage from "./pages/PinePage";
@@ -12,7 +11,7 @@ import MaplePage from "./pages/MaplePage";
 import { useEffect, useRef, useState } from "react";
 
 function App() {
-  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [, setSize] = useState({ width: 0, height: 0 });
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +32,6 @@ function App() {
           <Route path="/my-pine" element={<PinePage />} />
           <Route path="/my-cherryblossom" element={<CherryPage />} />
           <Route path="/my-maple" element={<MaplePage />} />
-          <Route path="/webcam" element={<WebcamPage size={size} />} />
           <Route path="/return" element={<ReturnPage />} />
         </Routes>
       </Router>
