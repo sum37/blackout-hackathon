@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import "../styles/MapPage.css";
 import { LatLng } from "../types";
+import BackHeader from "../components/BackHeader";
+import { postNutrient } from "../axios";
+import useUser from "../useUser";
 
 const MapPage = () => {
+  const user = useUser();
   const [appropriatePlaces, setAppropriatePlaces] = useState<LatLng[]>([
     { lat: 37.504, lng: 127.042 },
   ]); //TODO: For Test
@@ -63,15 +67,26 @@ const MapPage = () => {
           const lng = pos.coords.longitude;
 
           const newPlace = { lat, lng };
-
-          console.log(newPlace);
+          
+          const lastSeed = seeds[seeds.length - 1];
+          if (lastSeed && newPlace.lat == lastSeed.lat && newPlace.lng == lastSeed.lng) {
+            return;
+          }
+          postNutrient({
+            x: lat,
+            y: lng,
+            planted_by: user,
+            // nutrient_type: string;
+            is_drained: false,
+          }).then(() => {
+            setSeeds((prevPlaces) => {
+              return [...prevPlaces, newPlace];
+            });
+          }).catch((e) => console.log(e));
           displayMarker(map, newPlace);
-          setSeeds((prevPlaces) => {
-            return [...prevPlaces, newPlace];
-          });
         });
       }
-    }, 5000);
+    }, 10000000);
 
     return () => clearInterval(interval);
   }, [map]);
@@ -112,7 +127,7 @@ const MapPage = () => {
 
   return (
     <>
-      <Header />
+      <BackHeader showHeader={false} />
       <div id="map"></div>
       <div className="card">
         <div className="progress-section">

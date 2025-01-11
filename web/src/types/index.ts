@@ -21,7 +21,7 @@ export interface CreateNutrientRequest {
   x: number;
   y: number;
   planted_by: number;
-  nutrient_type: string;
+  // nutrient_type: string;
   is_drained: boolean;
 }
 
