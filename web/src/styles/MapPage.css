@@ -1,6 +1,6 @@
 .card {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   bottom: 0;
   padding: 32px;
   margin: 32px;
@@ -88,4 +88,35 @@
 
 .return-button:hover {
   background-color: #45a045;
+}
+
+.ride-button {
+  background-color: white;
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  z-index: 3;
+  font-size: 32px;
+  font-weight: bold;
+  color: black;
+  width: calc(100% - 64px);
+  border-radius: 20px;
+  height: 94px;
+  border: none;
+}
+
+.ride-button:hover {
+  background-color: #dddddd;
+}
+
+.video-mask {
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  background-color: white;
+}
+
+video {
+  z-index: 0;
+  border-radius: 24px;
 }
