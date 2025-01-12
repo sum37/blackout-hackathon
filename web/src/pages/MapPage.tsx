@@ -6,6 +6,7 @@ import { endDriving, getDrivingDataByUser, getNutrients, getParkingSpaces, postN
 import useUser from "../useUser";
 import { useNavigate } from "react-router-dom";
 import WebcamContainer, { WebcamContainerRef } from "../components/WebcamContainer";
+import ParkingModal from "../components/\bParkingModal";
 
 const getFlowerImage = (flowerName: string, is_drained: boolean) => {
   return `https://c87c-210-207-40-218.ngrok-free.app/static/images/${flowerName}_${is_drained ? 1 : 0}.png`
@@ -23,7 +24,9 @@ const MapPage = () => {
     return `${formattedMinutes}:${formattedSeconds}`;
   };
   
-  const [appropriatePlaces, setAppropriatePlaces] = useState<ParkingSpace[]>();
+  const [appropriatePlaces, setAppropriatePlaces] = useState<ParkingSpace[]>(
+    []
+  );
   const [seeds, setSeeds] = useState<Nutrient[]>([]);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [isDriving, setIsDriving] = useState(false);
@@ -31,46 +34,12 @@ const MapPage = () => {
 
   const [time, setTime] = useState(0);
   const [price, setPrice] = useState(0);
+  const [currentPoint, setCurrentPoint] = useState(0);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPos, setCurrentPos] = useState<LatLng | null>(null);
   
   const webcamRef = useRef<WebcamContainerRef>(null);
-
-  const displayMarker = (map: kakao.maps.Map, loc: LatLng) => {
-    if (!map) {
-      return;
-    }
-    const position = new window.kakao.maps.LatLng(loc.lat, loc.lng);
-
-    const imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
-    const imageSize = new kakao.maps.Size(64, 69);
-    const imageOption = {
-        offset: new kakao.maps.Point(27, 69),
-      };
-
-    const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-
-    // 마커를 생성합니다
-    const marker = new kakao.maps.Marker({
-      position,
-      image,
-      opacity: 0.5,
-    });
-
-    kakao.maps.event.addListener(marker, "mouseover", function () {
-      marker.setOpacity(1.0);
-    });
-
-    kakao.maps.event.addListener(marker, "mouseout", function () {
-      marker.setOpacity(0.5);
-    });
-
-    kakao.maps.event.addListener(marker, "click", function () {
-      console.log("click marker");
-    });
-
-    // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-  };
 
   const drawSeed = (map: kakao.maps.Map, loc: LatLng, flowerName: string, isDrained: boolean) => {
     if (!map) {
@@ -102,10 +71,23 @@ const MapPage = () => {
       return;
     }
     appropriatePlaces.forEach((place) => {
-      const {center_x, center_y} = place;
-      // TODO 영역 만들기
-      const pos = {lat: center_x, lng: center_y}
-      displayMarker(map, pos);
+      const {center_x, center_y, width, height} = place;
+      const sw = new kakao.maps.LatLng(center_y - (height / 2), center_x + (width / 2));
+      const ne = new kakao.maps.LatLng(center_y + (height / 2), center_x - (width / 2));
+      console.log(sw, ne);
+
+      const rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
+      const rectangle = new kakao.maps.Rectangle({
+        bounds: rectangleBounds, // 그려질 사각형의 영역정보입니다
+        strokeWeight: 4, // 선의 두께입니다
+        strokeColor: '#0bb94f', // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'shortdashdot', // 선의 스타일입니다
+        fillColor: '#0bb94f', // 채우기 색깔입니다
+        fillOpacity: 0.4 // 채우기 불투명도 입니다
+      });
+      rectangle.setMap(map);
+      console.log('rectangle');
     });
   }, [appropriatePlaces, map]);
 
@@ -187,6 +169,7 @@ const MapPage = () => {
             setSeeds((prevPlaces) => {
               return [...prevPlaces, nut];
             });
+            setCurrentPoint(res.data.active_drive.nutrient_success);
             if (map) {
               drawSeed(map, {lat: nut.planted_x, lng: nut.planted_y}, nut.nutrient_type, nut.is_drained);
             }
@@ -224,7 +207,6 @@ const MapPage = () => {
           }
           setIsWearingHelmet(predictions[0].class == 1);
         });
-        
       }
     }).catch((e) => {
       console.log(e);
@@ -261,8 +243,30 @@ const MapPage = () => {
     });
   }, []);
 
+  const isInRecommendedParking = (lat: number, lng: number): boolean => {
+    if (!appropriatePlaces.length) {
+      console.log("No recommended parking areas available.");
+      return false;
+    }
+  
+    // 현재 위치를 Kakao LatLng 객체로 변환
+    const currentPosition = new kakao.maps.LatLng(lat, lng);
+  
+    // 권장 주차 구간 배열을 순회하며 현재 위치가 포함되어 있는지 확인
+    return appropriatePlaces.some((place) => {
+      const { center_x, center_y, width, height } = place;
+  
+      // 주차 구간의 경계 계산
+      const sw = new kakao.maps.LatLng(center_y - height / 2, center_x - width / 2);
+      const ne = new kakao.maps.LatLng(center_y + height / 2, center_x + width / 2);
+      const bounds = new kakao.maps.LatLngBounds(sw, ne);
+  
+      // 현재 위치가 주차 구간 내에 있는지 확인
+      return bounds.contain(currentPosition);
+    });
+  };
+
   const handleReturnClick = () => {
-    console.log("return");
     if (!navigator.geolocation) {
       return;
     }
@@ -271,15 +275,37 @@ const MapPage = () => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
 
-      endDriving({user_id: user,
-        x: lat,
-        y: lon}).then((res) => {
-          const {tree_id, exp} = res.data;
-          setIsDriving(false);
-          navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: exp}});
-        })
+      const isInRecommended = isInRecommendedParking(lat, lon);
+
+      if (!isInRecommended) {
+        // 모달 띄우기
+        setIsModalOpen(true);
+        setCurrentPos({lat, lng: lon});
+        return;
+      }
     });
   };
+
+  const handleModalConfirmClick = () => {
+    if (!currentPos) {
+      return;
+    }
+    const {lat, lng} = currentPos;
+
+    endDriving({user_id: user,
+    x: lat,
+    y: lng}).then((res) => {
+      const {tree_id, exp} = res.data;
+      setIsDriving(false);
+      setCurrentPos(null);
+      navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: exp}});
+    })
+    setIsModalOpen(false);
+  }
+
+  const handleModelCancelClick = () => {
+    setIsModalOpen(false);
+  }
 
   function dataURLtoFile(dataURL: string): File {
     const arr = dataURL.split(',');
@@ -325,7 +351,7 @@ const MapPage = () => {
               </div>
               <div className="return-row">
                 <span>적립된 포인트</span>
-                <span className="return-value">{3}</span>
+                <span className="return-value">{currentPoint}</span>
               </div>
             </div>
               <button onClick={handleReturnClick} className="return-button">
@@ -336,6 +362,12 @@ const MapPage = () => {
           :
             <button className="ride-button" onClick={handleStartRide}>Scan to Ride</button>
         }
+            {isModalOpen && (
+      <ParkingModal
+        onConfirm={handleModalConfirmClick}
+        onCancel={handleModelCancelClick}
+      />
+    )}
     </>
   );
 };
