@@ -50,11 +50,12 @@ const images: Record<string, Record<number, string>> = {
 };
 
 interface TreeCardProps {
+    onClick?: () => void;
   progress: number;
   treeType: string;
 }
 
-const TreeCard = ({ progress, treeType }: TreeCardProps) => {
+const TreeCard = ({ onClick, progress, treeType }: TreeCardProps) => {
     const treeAddress = useMemo(() => {
         const age = Math.ceil(progress / 25);
         return images[treeType]?.[age];
@@ -76,7 +77,7 @@ const TreeCard = ({ progress, treeType }: TreeCardProps) => {
     }, [treeType]);
 
   return (
-    <div className="tree-card">
+    <div onClick={onClick} className="tree-card">
       <img className="tree-image" alt="trees" src={treeAddress} />
       <div className="tree-name">{name}</div>
       <div className="progress-container">

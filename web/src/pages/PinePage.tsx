@@ -32,7 +32,7 @@ const PinePage = () => {
 
   return (
     <>
-      <BackHeader />
+      <BackHeader prevPath="/my-trees"/>
       <div className="sub-title tree-page-title">소나무</div>
       <div className="cards-container">
       {PineTreeExp !== null ? (
