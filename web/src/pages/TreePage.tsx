@@ -27,7 +27,7 @@ const TreePage = () => {
   return (
     <>
       <BackHeader />
-      <div className="sub-title tree-page-title">나의 나무 도감</div>
+      <div className="sub-title-tree-page-title">나의 나무 도감</div>
       <div className="cards-container">
         {
           trees?.map(({id, tree_type, exp}) => <TreeCard onClick={() => handleCardClick(tree_type)} key={id} treeType={tree_type} progress={exp / 1000 * 100} />)
