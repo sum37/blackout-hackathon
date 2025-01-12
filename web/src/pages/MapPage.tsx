@@ -64,6 +64,7 @@ const MapPage = () => {
   
   const webcamRef = useRef<WebcamContainerRef>(null);
 
+  const markerRef = useRef<kakao.maps.Marker | null>(null);
   const markerList: kakao.maps.Marker[] = [];
 
   const drawAllSeeds = (map: kakao.maps.Map, seeds: Nutrient[]) => {
@@ -105,30 +106,30 @@ const MapPage = () => {
     drawAllSeeds(map, seeds);
   }, [seeds, map]);
 
-  const drawSeed = (map: kakao.maps.Map, loc: LatLng, flowerName: string, isDrained: boolean) => {
-    if (!map) {
-      return;
-    }
-    const position = new window.kakao.maps.LatLng(loc.lat, loc.lng);
+  // const drawSeed = (map: kakao.maps.Map, loc: LatLng, flowerName: string, isDrained: boolean) => {
+  //   if (!map) {
+  //     return;
+  //   }
+  //   const position = new window.kakao.maps.LatLng(loc.lat, loc.lng);
 
-    const imageSrc = getFlowerImage(flowerName as FlowerType, isDrained);
-    const imageSize = new kakao.maps.Size(25, 25);
-    const imageOption = {
-      offset: new kakao.maps.Point(25, 25),
-    };
+  //   const imageSrc = getFlowerImage(flowerName as FlowerType, isDrained);
+  //   const imageSize = new kakao.maps.Size(25, 25);
+  //   const imageOption = {
+  //     offset: new kakao.maps.Point(25, 25),
+  //   };
 
-    const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+  //   const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
-    // 마커를 생성합니다
-    const seedMarker = new kakao.maps.Marker({
-      position,
-      image,
-      opacity: 1.0,
-    });
+  //   // 마커를 생성합니다
+  //   const seedMarker = new kakao.maps.Marker({
+  //     position,
+  //     image,
+  //     opacity: 1.0,
+  //   });
 
-    // 마커가 지도 위에 표시되도록 설정합니다
-    seedMarker.setMap(map);
-  };
+  //   // 마커가 지도 위에 표시되도록 설정합니다
+  //   seedMarker.setMap(map);
+  // };
 
   useEffect(() => {
     if (!map || !appropriatePlaces) {
