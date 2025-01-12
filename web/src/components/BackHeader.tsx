@@ -18,9 +18,7 @@ const BackHeader = ({ showHeader = true }: BackHeaderProps) => {
   return (
     <div className={`back-header${showHeader ? " show-header" : ""}`}>
       <button className="back-button" onClick={handleClickBack}>
-        <div className = "circle">
         <img src={ArrowLeft} alt={"<="} />
-        </div>
       </button>
       {showHeader && <span className="header-title">
         <img className="logo-image" src={Logo} alt="GPT" />

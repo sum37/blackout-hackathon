@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 200px;
 }
 
 .progress-section {
@@ -38,37 +39,45 @@
 .progress-title {
   font-size: 24px;
   font-weight: bold;
-  color: #4caf50;
+  color: #000;
   margin-bottom: 10px;
 }
 
+.progress-bar-container {
+  width: 100px;
+  height: 8px;
+  border-width: 1px;
+  border-color: red;
+  flex-direction: row;
+}
+
 .progress-bar {
-  width: 100%;
+  width: 20px;
   height: 8px;
   background-color: #d0ecd1;
   border-radius: 4px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
 }
 
-.progress-fill {
-  height: 8px;
-  background-color: #4caf50;
-  border-radius: 4px 0 0 4px;
-}
 
 .content-section {
   text-align: center;
   width: 100%;
+  position: absolute;
+  margin-left: 50px;
+  margin-top: 10px;
 }
 
 .details {
   list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
+  padding: 10px;
   text-align: left;
   font-size: 16px;
   color: #555;
+  
 }
 
 .details li {
@@ -80,10 +89,13 @@
   color: white;
   border: none;
   border-radius: 20px;
-  padding: 10px 20px;
+  padding: 15px 35px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  position: absolute;
+  margin-left: 0px;
+  margin-top: -20px
 }
 
 .return-button:hover {
@@ -100,7 +112,7 @@
   color: white;
   width: calc(100% - 64px);
   border-radius: 30px;
-  height: 94px;
+  height: 80px;
   border: none;
 }
 

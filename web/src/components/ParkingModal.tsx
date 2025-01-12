@@ -11,7 +11,8 @@ const ParkingModal: React.FC<ParkingModalProps> = ({ onConfirm, onCancel }) => {
     <div className="modal-overlay">
       <div className="modal-content">
         <p className="modal-message">권장 주차구역이 아닙니다.</p>
-        <p className="modal-submessage">이 곳에 주차할 시 적립된 포인트가 사라집니다. 그래도 하시겠습니까?</p>
+        <p className="modal-submessage">이 곳에 주차할 시 적립된 포인트가 사라집니다.</p>
+        <p className="modal-submessage2">그래도 계속하시겠습니까?</p>
         <div className="modal-buttons">
           <button className="modal-button" onClick={onConfirm}>
             계속하기

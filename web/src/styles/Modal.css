@@ -30,7 +30,13 @@
   .modal-submessage {
     font-size: 14px;
     color: #555;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+  }
+
+  .modal-submessage2 {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 40px;
   }
   
   .modal-buttons {
@@ -39,15 +45,18 @@
   }
   
   .modal-button {
+    height: 45px;
+    width: 120px;
     background: #34c759; /* 버튼 색상 */
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 10px 20px;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
+    margin-bottom: 10px;
   }
   
   .modal-button:hover {

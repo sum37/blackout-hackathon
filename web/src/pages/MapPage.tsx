@@ -333,11 +333,8 @@ const MapPage = () => {
         <div className="progress-section">
           <div className="progress-left">
             <div className="progress-title">75%</div>
-            <div className="progress-bar">
-              <div className="progress-fill"></div>
-            </div>
           </div>
-          <WebcamContainer ref={webcamRef} size={{width: 124, height: 135}} />
+          <WebcamContainer ref={webcamRef} size={{width: 124, height: 135,}} />
         </div>
             <div className="content-section">
             <div className="return-container">

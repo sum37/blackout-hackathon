@@ -56,7 +56,7 @@ const MainPage = () => {
         </div>
         <div className="main-page-qr-container">
           <div className="scan-line"></div>
-          <div className="scanToRide">Scan To Ride</div>
+          <div className="scanToRide">Scan to Ride</div>
         </div>
         <div className="etc-container">
           <div className="service-center-container">
