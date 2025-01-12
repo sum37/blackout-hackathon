@@ -8,9 +8,31 @@ import { useNavigate } from "react-router-dom";
 import WebcamContainer, { WebcamContainerRef } from "../components/WebcamContainer";
 import ParkingModal from "../components/\bParkingModal";
 
-const getFlowerImage = (flowerName: string, is_drained: boolean) => {
-  return `https://c87c-210-207-40-218.ngrok-free.app/static/images/${flowerName}_${is_drained ? 1 : 0}.png`
-};
+// 이미지 객체로 그룹화
+const images = {
+  cherryblossom: {
+      0: "https://github.com/user-attachments/assets/a4b272d1-9cb9-4f19-98c0-fd3ac4c67d60",
+      1: "https://github.com/user-attachments/assets/b95f7147-64ff-4611-b7a9-87872a89b78c"
+  },
+  pine: {
+      0: "https://github.com/user-attachments/assets/1c2cbbe9-cd0b-4d26-ace1-dc8503e93b7c",
+      1: "https://github.com/user-attachments/assets/3e02e96f-c597-4958-8e5e-dccda73df3f0"
+  },
+  bamboo: {
+      0: "https://github.com/user-attachments/assets/d63597c0-5a2d-424b-9900-e0a214d9f84b",
+      1: "https://github.com/user-attachments/assets/94f7aa8c-71b6-4faa-9fa8-0e4ddceffde3"
+  },
+  maple: {
+      0: "https://github.com/user-attachments/assets/a8aabaf8-6532-4200-9e31-165945ba1d34",
+      1: "https://github.com/user-attachments/assets/640a768a-89ec-45cb-9a7a-15199630c3d8"
+  }
+}
+
+type FlowerType = "cherryblossom" | "pine" | "bamboo" | "maple";
+
+const getFlowerImage = (flowerName: FlowerType, isDrained: boolean) => {
+  return images[flowerName][isDrained ? 0 : 1];
+}
 
 const MapPage = () => {
   const user = useUser();
@@ -47,7 +69,7 @@ const MapPage = () => {
     }
     const position = new window.kakao.maps.LatLng(loc.lat, loc.lng);
 
-    const imageSrc = getFlowerImage(flowerName, isDrained);
+    const imageSrc = getFlowerImage(flowerName as FlowerType, isDrained);
     const imageSize = new kakao.maps.Size(25, 25);
     const imageOption = {
       offset: new kakao.maps.Point(25, 25),
