@@ -64,7 +64,46 @@ const MapPage = () => {
   
   const webcamRef = useRef<WebcamContainerRef>(null);
 
-  const markerRef = useRef<kakao.maps.Marker | null>(null);
+  const markerList: kakao.maps.Marker[] = [];
+
+  const drawAllSeeds = (map: kakao.maps.Map, seeds: Nutrient[]) => {
+    if (!map || !seeds.length) {
+      return;
+    }
+  
+    // 이전 마커 제거
+    markerList.forEach((marker) => marker.setMap(null));
+    markerList.length = 0;
+  
+    // 새 마커 그리기
+    seeds.forEach((seed) => {
+      const { planted_x, planted_y, nutrient_type, is_drained } = seed;
+      const position = new kakao.maps.LatLng(planted_x, planted_y);
+  
+      const imageSrc = getFlowerImage(nutrient_type as FlowerType, is_drained);
+      const imageSize = new kakao.maps.Size(25, 25);
+      const imageOption = {
+        offset: new kakao.maps.Point(25, 25),
+      };
+  
+      const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+  
+      const marker = new kakao.maps.Marker({
+        position,
+        image,
+        map, // 마커를 지도에 추가
+      });
+  
+      markerList.push(marker); // 새로 생성된 마커를 저장
+    });
+  };
+
+  useEffect(() => {
+    if (!map || !seeds.length) {
+      return;
+    }
+    drawAllSeeds(map, seeds);
+  }, [seeds, map]);
 
   const drawSeed = (map: kakao.maps.Map, loc: LatLng, flowerName: string, isDrained: boolean) => {
     if (!map) {
@@ -81,14 +120,14 @@ const MapPage = () => {
     const image = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
     // 마커를 생성합니다
-    const marker = new kakao.maps.Marker({
+    const seedMarker = new kakao.maps.Marker({
       position,
       image,
       opacity: 1.0,
     });
 
     // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
+    seedMarker.setMap(map);
   };
 
   useEffect(() => {
@@ -122,9 +161,9 @@ const MapPage = () => {
     // 주변 씨앗 정보 가져오기
     getNutrients()
     .then((res) => {
-      res.data.forEach((s) => {
-        drawSeed(map, {lat: s.planted_x, lng: s.planted_y}, s.nutrient_type, s.is_drained);
-      })
+      // res.data.forEach((s) => {
+      //   drawSeed(map, {lat: s.planted_x, lng: s.planted_y}, s.nutrient_type, s.is_drained);
+      // })
       setSeeds(res.data);
     })
     .catch((e) => {
@@ -190,9 +229,9 @@ const MapPage = () => {
           return [...prevPlaces, nut];
         });
         setCurrentPoint(res.data.active_drive.nutrient_success);
-        if (map) {
-          drawSeed(map, {lat: nut.planted_x, lng: nut.planted_y}, nut.nutrient_type, nut.is_drained);
-        }
+        // if (map) {
+        //   drawSeed(map, {lat: nut.planted_x, lng: nut.planted_y}, nut.nutrient_type, nut.is_drained);
+        // }
       }).catch((e) => console.log(e));
     }, 1000);
 
