@@ -1,51 +1,48 @@
 .return-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* 중앙 정렬 대신 위쪽부터 정렬 */
+  padding-top: 16px; /* 상단 간격 추가 */
+  gap: 16px; /* 내부 요소 간격 줄임 */
 }
 
 .return-container {
-    margin-top: 64px;
-    width: 160px;
-    display: flex;
-    flex-direction: column;
-    color: black;
-    font-size: 16px;
-    gap: 8px;
+  margin-top: 20px; /* 위쪽 간격 줄임 */
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  font-size: 16px;
+  gap: 4px; /* 행 간의 간격 줄임 */
 }
 
 .return-row {
-    height: 30px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    text-align: start;
-}
-
-.return-value {
-    font-weight: bold;
+  height: 24px; /* 행 높이 줄임 */
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  text-align: start;
 }
 
 .return-confirm {
-    width: 226px;
-    height: 72px;
-    border-radius: 20px;
-    color: black;
-    background-color: #0bb94f;
-    border: none;
-    font-size: 16px;
-    margin-top: 96px;
-    position: absolute;
-    bottom: 32px;
+  width: 226px;
+  height: 60px; /* 버튼 높이 줄임 */
+  border-radius: 20px;
+  color: black;
+  background-color: #0bb94f;
+  border: none;
+  font-size: 16px;
+  margin-top: 20px; /* 간격 줄임 */
+  position: relative; /* absolute 제거 */
 }
 
 .tree-card {
   width: 150px;
-  height: 216px;
+  height: 200px; /* 카드 높이 줄임 */
   background-color: #f4f4f4; /* 카드 배경 */
   border-radius: 20px;
-  padding: 16px;
+  padding: 12px; /* 내부 패딩 줄임 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
   text-align: center;
   position: relative;
@@ -58,33 +55,13 @@
 .tree-image {
   flex: 1;
   width: 100%;
-  height: 100px;
+  height: 80px; /* 이미지 높이 줄임 */
   border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.tree-name {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.progress-container {
-  width: 100%;
-  height: 10px;
-  background-color: #e0e0e0; /* 프로그레스 바 배경 */
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-fill {
-  height: 100%;
-  background-color: #4caf50; /* 초록색 진행 표시 */
-  transition: width 3s ease; /* 애니메이션 */
+  margin-bottom: 8px; /* 간격 줄임 */
 }
 
 .tree-page-title {
-  margin-top: 32px;
-  margin-bottom: 64px;
+  margin-top: 16px; /* 위쪽 간격 줄임 */
+  margin-bottom:16px; /* 아래쪽 간격 줄임 */
+  font-size: 20px; /* 제목 크기 줄임 */
 }

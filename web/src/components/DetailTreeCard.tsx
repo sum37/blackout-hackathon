@@ -101,7 +101,7 @@ interface DetailTreeCardProps {
         <div className="detail-stage-text">{stageText}</div>
         <div className="detail-stage-text">{progress}</div> {/*나중에 없애야하는 줄 */}
         <div className="detail-progress-container">
-          <div className="detail-progress-fill" style={{ width: `${progress / 10}%` }} />
+          <div className="detail-progress-fill" style={{ width: `${progress/10}%` }} />
         </div>
         <div className="detail-progress-labels">
           <span>0</span>
