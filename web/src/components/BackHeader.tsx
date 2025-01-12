@@ -12,7 +12,6 @@ const BackHeader = ({ prevPath, showHeader = true }: BackHeaderProps) => {
   const navigate = useNavigate();
 
   const handleClickBack = () => {
-    console.log(prevPath);
     if (prevPath) {
       navigate(prevPath);
     } else {

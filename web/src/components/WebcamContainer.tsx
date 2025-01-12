@@ -16,7 +16,6 @@ export interface WebcamContainerRef {
 
 const WebcamContainer = forwardRef<WebcamContainerRef, WebcamPageProps>(({ style, size }: WebcamPageProps, ref) => {
   const { width, height } = size;
-  console.log(width, height);
   const videoConstraints = {
     width,
     height,
