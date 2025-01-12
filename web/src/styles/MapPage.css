@@ -41,6 +41,7 @@
   font-weight: bold;
   color: #000;
   margin-bottom: 10px;
+  margin-left: -15px;
 }
 
 .progress-bar-container {
@@ -64,9 +65,9 @@
 .content-section {
   text-align: center;
   width: 50%;
-  margin-top: 10px;
+  margin-top: 50px;
   position: absolute;
-  margin-left: -40%
+  margin-left: -40%;
 }
 
 .details {
@@ -93,7 +94,6 @@
   width: 128px;
   height: 45px;
   margin-left: 55%;
-  margin-top: -10%;
 }
 
 .return-button:hover {
@@ -129,4 +129,32 @@
 video {
   z-index: 0;
   border-radius: 24px;
+}
+
+.battery-indicator {
+  display: flex;
+  gap: 4px; /* 각 바 사이의 간격 */
+  margin-top: 0px; /* progress-title 아래 간격 */
+  margin-left: -15px;
+}
+
+.battery-bar {
+  width: 20px; /* 각 바의 너비 */
+  height: 8px; /* 각 바의 높이 */
+  border-radius: 2px; /* 바의 모서리 둥글기 */
+  background-color: #d0ecd1; /* 기본 색상 */
+  transition: background-color 0.3s ease; /* 색상 전환 애니메이션 */
+}
+
+.progress-header {
+  display: flex; /* 가로 배치 */
+  align-items: center; /* 수직 정렬 */
+  gap: 20px; /* 아이콘과 텍스트 간격 */
+}
+
+.battery-icon {
+  height: 24px; /* progress-title의 세로 크기와 맞춤 */
+  width: auto; /* 가로 비율 유지 */
+  margin-left: -10px;
+  margin-top: -10px;
 }

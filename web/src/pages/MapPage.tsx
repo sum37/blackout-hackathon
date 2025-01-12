@@ -7,6 +7,7 @@ import useUser from "../useUser";
 import { useNavigate } from "react-router-dom";
 import WebcamContainer, { WebcamContainerRef } from "../components/WebcamContainer";
 import ParkingModal from "../components/\bParkingModal";
+import BatterySVG from "../assets/battery.png";
 
 // 이미지 객체로 그룹화
 const images = {
@@ -352,7 +353,11 @@ const MapPage = () => {
           <div className="card">
         <div className="progress-section">
           <div className="progress-left">
-            <div className="progress-title">75%</div>
+            <div className="progress-header">
+              <img src={BatterySVG} className="battery-icon" />
+              <div className="progress-title">75%</div>
+            </div>
+            <BatteryIndicator level={3} /> {/* 배터리 잔량 (0 ~ 4) */}
           </div>
           <WebcamContainer ref={webcamRef} size={{width: 124, height: 135,}} />
         </div>
@@ -388,5 +393,29 @@ const MapPage = () => {
     </>
   );
 };
+
+const BatteryIndicator = ({ level }: { level: number }) => {
+  const getBarColor = (index: number) => {
+    if (index < level) {
+      return "#4caf50"; // 활성 상태 색상 (녹색)
+    }
+    return "#d0ecd1"; // 비활성 상태 색상 (회색)
+  };
+
+  return (
+    <div className="battery-indicator">
+      {[0, 1, 2, 3].map((index) => (
+        <div
+          key={index}
+          className="battery-bar"
+          style={{
+            backgroundColor: getBarColor(index),
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
 
 export default MapPage;
