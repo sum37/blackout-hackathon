@@ -64,6 +64,8 @@ const MapPage = () => {
   
   const webcamRef = useRef<WebcamContainerRef>(null);
 
+  const markerRef = useRef<kakao.maps.Marker | null>(null);
+
   const drawSeed = (map: kakao.maps.Map, loc: LatLng, flowerName: string, isDrained: boolean) => {
     if (!map) {
       return;
@@ -168,35 +170,30 @@ const MapPage = () => {
     }, 5000);
 
     const interval2 = setInterval(() => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-
-          const newPlace = { lat, lng };
-          
-          const lastSeed = seeds[seeds.length - 1];
-          if (lastSeed && newPlace.lat == lastSeed.planted_x && newPlace.lng == lastSeed.planted_y) {
-            return;
-          }
-          postNutrient({
-            x: lat,
-            y: lng,
-            planted_by: user,
-            // nutrient_type: string;
-            is_drained: !isWearingHelmet,
-          }).then((res) => {
-            const nut = res.data.nutrient;
-            setSeeds((prevPlaces) => {
-              return [...prevPlaces, nut];
-            });
-            setCurrentPoint(res.data.active_drive.nutrient_success);
-            if (map) {
-              drawSeed(map, {lat: nut.planted_x, lng: nut.planted_y}, nut.nutrient_type, nut.is_drained);
-            }
-          }).catch((e) => console.log(e));
-        });
+      if (!currentPos) {
+        return;
       }
+      
+      const lastSeed = seeds[seeds.length - 1];
+      if (lastSeed && currentPos.lat == lastSeed.planted_x && currentPos.lng == lastSeed.planted_y) {
+        return;
+      }
+      postNutrient({
+        x: currentPos.lat,
+        y: currentPos.lng,
+        planted_by: user,
+        // nutrient_type: string;
+        is_drained: !isWearingHelmet,
+      }).then((res) => {
+        const nut = res.data.nutrient;
+        setSeeds((prevPlaces) => {
+          return [...prevPlaces, nut];
+        });
+        setCurrentPoint(res.data.active_drive.nutrient_success);
+        if (map) {
+          drawSeed(map, {lat: nut.planted_x, lng: nut.planted_y}, nut.nutrient_type, nut.is_drained);
+        }
+      }).catch((e) => console.log(e));
     }, 1000);
 
     return () => {
@@ -234,31 +231,66 @@ const MapPage = () => {
   }
 
   const initMap = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
+    const lat = 37.5028;
+    const lon = 127.0415;
 
-        const container = document.getElementById("map");
-        if (!container) {
-          return;
-        }
-
-        const curPos = new window.kakao.maps.LatLng(lat, lon);
-        const options = {
-          center: curPos,
-          level: 3,
-        };
-        const map = new window.kakao.maps.Map(container, options);
-        setMap(map);
-      });
+    const container = document.getElementById("map");
+    if (!container) {
+      return;
     }
+
+    const curPos = new window.kakao.maps.LatLng(lat, lon);
+    const options = {
+      center: curPos,
+      level: 3,
+    };
+    const map = new window.kakao.maps.Map(container, options);
+    setMap(map);
+
+    const marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(37.5665, 126.9780),
+      map: map,
+    });
+    markerRef.current = marker;
   };
 
   useEffect(() => {
+    if (!currentPos || !map || !markerRef.current) return;
+
+    const newLatLng = new kakao.maps.LatLng(currentPos.lat, currentPos.lng);
+
+    markerRef.current.setPosition(newLatLng);
+  }, [currentPos, map]);
+
+  useEffect(() => {
+    let watchId: number;
+    if (navigator.geolocation) {
+      watchId = navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentPos({ lat: latitude, lng: longitude });
+          console.log("watch", latitude, longitude);
+        },
+        (error) => {
+          console.error("Error getting position:", error);
+        },
+        {
+          enableHighAccuracy: true, // GPS 정확도 향상
+          maximumAge: 0, // 캐싱 방지
+          timeout: 5000, // 최대 대기 시간 설정
+        }
+      );
+    }
+
     window.kakao.maps.load(() => {
       initMap();
     });
+
+    return () => {
+      if (watchId) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    }
   }, []);
 
   const isInRecommendedParking = (lat: number, lng: number): boolean => {
@@ -285,23 +317,16 @@ const MapPage = () => {
   };
 
   const handleReturnClick = () => {
-    if (!navigator.geolocation) {
+    if (!currentPos){
       return;
     }
+    const isInRecommended = isInRecommendedParking(currentPos.lat, currentPos.lng);
 
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-
-      const isInRecommended = isInRecommendedParking(lat, lon);
-
-      if (!isInRecommended) {
-        // 모달 띄우기
-        setIsModalOpen(true);
-        setCurrentPos({lat, lng: lon});
-        return;
-      }
-    });
+    if (!isInRecommended) {
+      // 모달 띄우기
+      setIsModalOpen(true);
+      return;
+    }
   };
 
   const handleModalConfirmClick = () => {
@@ -315,8 +340,6 @@ const MapPage = () => {
     y: lng}).then((res) => {
       const {tree_id, tree_exp_updated} = res.data;
       setIsDriving(false);
-      setCurrentPos(null);
-
       getTree(tree_id).then((res) => {
         navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: tree_exp_updated, curExp: res.data.exp, treeType: res.data.tree_type}});
       }).catch((e) => console.log(e));

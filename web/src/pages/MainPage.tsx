@@ -9,25 +9,21 @@ const MainPage = () => {
   const navigate = useNavigate(); // 페이지 이동 훅
 
   const initMap = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
+    const lat = 37.5028;
+    const lon = 127.0415;
 
-        const container = document.getElementById("main-map");
-        if (!container) {
-          return;
-        }
-
-        const curPos = new window.kakao.maps.LatLng(lat, lon);
-        const options = {
-          center: curPos,
-          level: 3,
-        };
-        const mapInstance = new window.kakao.maps.Map(container, options);
-        setMap(mapInstance);
-      });
+    const container = document.getElementById("main-map");
+    if (!container) {
+      return;
     }
+
+    const curPos = new window.kakao.maps.LatLng(lat, lon);
+    const options = {
+      center: curPos,
+      level: 3,
+    };
+    const mapInstance = new window.kakao.maps.Map(container, options);
+    setMap(mapInstance);
   };
 
   useEffect(() => {
