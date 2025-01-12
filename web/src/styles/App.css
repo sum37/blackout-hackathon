@@ -53,6 +53,19 @@
   background-color: #d9d9d94D;
 }
 
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* 원의 크기 */
+  height: 50px;
+  border-radius: 50%;
+  background-color: white; /* 흰색 원 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 원에 그림자 */
+  margin-left: 10px;
+  margin-top: 30px;
+}
+
 .logo-image {
   height: 32px;
 }

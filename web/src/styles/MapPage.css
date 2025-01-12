@@ -91,22 +91,22 @@
 }
 
 .ride-button {
-  background-color: white;
+  background-color: #0BB94F;
   position: absolute;
   left: 32px;
   bottom: 32px;
   z-index: 3;
-  font-size: 32px;
-  font-weight: bold;
-  color: black;
+  font-size: 20px;
+  color: white;
   width: calc(100% - 64px);
-  border-radius: 20px;
+  border-radius: 30px;
   height: 94px;
   border: none;
 }
 
 .ride-button:hover {
-  background-color: #dddddd;
+  background-color: #EAFFF2;
+  color: black;
 }
 
 .video-mask {

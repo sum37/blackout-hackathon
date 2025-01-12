@@ -129,7 +129,6 @@ const TreeShortCut = () => {
             alt={tree.tree_type}
             src={getImagePath(getStageText(tree.exp), tree.tree_type)}
           />
-          <div className="tree-exp">EXP: {tree.exp}</div>
         </div>
       ))}
     </div>
