@@ -64,7 +64,7 @@
 
 .content-section {
   text-align: center;
-  width: 40%;
+  width: 50%;
   margin-top: 50px;
   position: absolute;
   margin-left: -40%;
@@ -93,7 +93,7 @@
   position: absolute;
   width: 128px;
   height: 45px;
-  margin-left: 55%;
+  margin-left: 50%;
 }
 
 .return-button:hover {
@@ -157,4 +157,23 @@ video {
   width: auto; /* 가로 비율 유지 */
   margin-left: -10px;
   margin-top: -10px;
+}
+
+.return-container {
+  margin-top: 32px; /* 컨테이너 상단 간격 축소 */
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  color: black;
+  font-size: 16px;
+  gap: 4px; /* 각 행 사이 간격 줄임 */
+}
+
+.return-row {
+  height: 24px; /* 행 높이를 줄임 */
+  width: 80%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  text-align: start;
+  margin-bottom: 2px; /* 행 하단 여백 줄임 */
 }

@@ -359,7 +359,7 @@ const MapPage = () => {
             </div>
             <BatteryIndicator level={3} /> {/* 배터리 잔량 (0 ~ 4) */}
           </div>
-          <WebcamContainer ref={webcamRef} size={{width: 124, height: 135,}} />
+          <WebcamContainer ref={webcamRef} size={{width: 115, height: 135,}} />
         </div>
             <div className="content-section">
             <div className="return-container">
