@@ -99,7 +99,7 @@ interface DetailTreeCardProps {
       <div className="detail-card-container">
         <img className="detail-tree-image" alt="trees" src={imagePath}/>
         <div className="detail-stage-text">{stageText}</div>
-        <div className="detail-stage-text">{progress}</div> {/*나중에 없애야하는 줄 */}
+        <div className="detail-stage-text">{progress}</div>
         <div className="detail-progress-container">
           <div className="detail-progress-fill" style={{ width: `${progress/10}%` }} />
         </div>

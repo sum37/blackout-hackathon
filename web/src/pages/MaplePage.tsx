@@ -33,7 +33,7 @@ const MaplePage = () => {
   return (
     <>
       <BackHeader prevPath="/my-trees"/>
-      <div className="sub-title tree-page-title">단풍나무</div>
+      <p className="detail-tree-name">단풍나무</p>
       <div className="cards-container">
       {MapleTreeExp !== null ? (
           <DetailTreeCard progress={MapleTreeExp} tree_type="maple"/>

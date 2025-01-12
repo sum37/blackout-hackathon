@@ -4,26 +4,26 @@
     justify-content: center; /* 세로 가운데 정렬 */
     align-items: center; /* 가로 가운데 정렬 */
     width: 80%; /* 컨테이너의 너비 */
-    height: 60%; /* 컨테이너의 높이 */
+    height: 100%; /* 컨테이너의 높이 */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); /* 정확히 가운데 정렬 */
     padding: 20px;
   }
-  
+
   .detail-tree-image {
     width: 90%; /* 컨테이너의 80% 너비 */
+    margin-top: 20px;
     border-radius: 10px;
     object-fit: cover; /* 이미지 비율 유지 */
-    margin-bottom: 80px; /* 하단 여백 */
+    margin-bottom: 50px; /* 하단 여백 */
   }
 
   .detail-stage-text {
     font-size: 18px; /* 텍스트 크기 */
-    font-weight: bold; /* 굵게 표시 */
     color: #333; /* 어두운 회색 */
-    margin-bottom: 20px; /* 프로그레스 바와 간격 */
+    margin-bottom: 10px; /* 프로그레스 바와 간격 */
     text-align: center;
   }
   
@@ -34,6 +34,7 @@
     border-radius: 25px;
     overflow: hidden;
     position: relative;
+    margin-top: 10px;
   }
   
   .detail-progress-fill {
@@ -42,6 +43,12 @@
     transition: width 0.3s ease; /* 애니메이션 */
   }
 
+  .detail-tree-name {
+    color: black;
+    font-size: 24px;
+    margin-top: 30px;
+  }
+  
   .detail-progress-labels {
     display: flex;
     justify-content: space-between; /* 라벨들을 균등 분배 */

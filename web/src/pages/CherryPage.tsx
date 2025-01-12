@@ -32,7 +32,7 @@ const CherryPage = () => {
   return (
     <>
       <BackHeader prevPath="/my-trees"/>
-      <div className="sub-title tree-page-title">벚나무</div>
+      <div className="detail-tree-name">벚나무</div>
       <div className="cards-container">
       {CherryTreeExp !== null ? (
           <DetailTreeCard progress={CherryTreeExp} tree_type={"cherryblossom"} />
