@@ -2,7 +2,6 @@ import "../styles/ReturnPage.css";
 import BackHeader from "../components/BackHeader";
 import TreeCard from "../components/TreeCard";
 import { useEffect, useState } from "react";
-import { getTree } from "../axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface State {
@@ -10,30 +9,25 @@ interface State {
   price: number;
   treeId: number;
   treeExpUpdate: number;
+  curExp: number;
+  treeType: string;
 }
 
 const ReturnPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
-  const { time, price, treeId, treeExpUpdate } = state as State;
+  const { time, price, treeExpUpdate, curExp, treeType } = state as State;
 
   const total_points = 1000;
 
   const [points, setPoints] = useState<number | null>(null);
-  const [treeType, setTreeType] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("return page");
-    getTree(treeId).then((res) => {
-      const r = res.data.exp;
-      setPoints(r - treeExpUpdate);
-      setTreeType(res.data.tree_type);
-
-      setTimeout(() => {
-        setPoints(r);
-      }, 3000);
-    }).catch((e) => console.log(e));
+    setPoints(curExp - treeExpUpdate);
+    setTimeout(() => {
+      setPoints(curExp);
+    }, 3000);
   }, []);
 
   const formatTime = (seconds: number): string => {

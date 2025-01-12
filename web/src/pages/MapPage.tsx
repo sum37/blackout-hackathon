@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/MapPage.css";
 import { LatLng, Nutrient, ParkingSpace } from "../types";
 import BackHeader from "../components/BackHeader";
-import { endDriving, getDrivingDataByUser, getNutrients, getParkingSpaces, postNutrient, predictHelmet, startDriving } from "../axios";
+import { endDriving, getDrivingDataByUser, getNutrients, getParkingSpaces, getTree, postNutrient, predictHelmet, startDriving } from "../axios";
 import useUser from "../useUser";
 import { useNavigate } from "react-router-dom";
 import WebcamContainer, { WebcamContainerRef } from "../components/WebcamContainer";
@@ -96,7 +96,6 @@ const MapPage = () => {
       const {center_x, center_y, width, height} = place;
       const sw = new kakao.maps.LatLng(center_y - (height / 2), center_x + (width / 2));
       const ne = new kakao.maps.LatLng(center_y + (height / 2), center_x - (width / 2));
-      console.log(sw, ne);
 
       const rectangleBounds = new kakao.maps.LatLngBounds(sw, ne);
       const rectangle = new kakao.maps.Rectangle({
@@ -109,7 +108,6 @@ const MapPage = () => {
         fillOpacity: 0.4 // 채우기 불투명도 입니다
       });
       rectangle.setMap(map);
-      console.log('rectangle');
     });
   }, [appropriatePlaces, map]);
 
@@ -213,7 +211,6 @@ const MapPage = () => {
       // 헬멧 체크
       if (webcamRef.current) {
         const url = webcamRef.current.capture();
-        console.log(url);
         if (!url) {
           return;
         }
@@ -240,8 +237,6 @@ const MapPage = () => {
       navigator.geolocation.getCurrentPosition((pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-        console.log(pos.coords.latitude);
-        console.log(pos.coords.longitude);
 
         const container = document.getElementById("map");
         if (!container) {
@@ -317,10 +312,13 @@ const MapPage = () => {
     endDriving({user_id: user,
     x: lat,
     y: lng}).then((res) => {
-      const {tree_id, exp} = res.data;
+      const {tree_id, tree_exp_updated} = res.data;
       setIsDriving(false);
       setCurrentPos(null);
-      navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: exp}});
+
+      getTree(tree_id).then((res) => {
+        navigate("/return", {state: {time, price, treeId: tree_id, treeExpUpdate: tree_exp_updated, curExp: res.data.exp, treeType: res.data.tree_type}});
+      }).catch((e) => console.log(e));
     })
     setIsModalOpen(false);
   }

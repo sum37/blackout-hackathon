@@ -76,7 +76,7 @@ export interface EndDrivingResponse {
   message: string;
   drive: DrivingSession;
   parking_space: string;
-  exp: number;
+  tree_exp_updated: number;
   tree_id: number;
 }
 
