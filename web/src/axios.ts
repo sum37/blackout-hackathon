@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { CreateNutrientRequest, CreateNutrientResponse, CreateTreeRequest, CreateUserRequest, CreateUserResponse, DrivingSession, EndDrivingResponse, HelmetDetectionResponse, Nutrient, ParkingSpace, PostEndDrivingRequest, PostParkingSpaceRequest, Tree, User } from "./types";
 
 const client = axios.create({
-    baseURL: 'https://c87c-210-207-40-218.ngrok-free.app',  // Set this to your FastAPI server URL
+    baseURL: 'https://5c8c-210-207-40-218.ngrok-free.app',  // Set this to your FastAPI server URL
     withCredentials: true,  // Include credentials in requests (useful for cookies or sessions)
     headers: {
         'Access-Control-Allow-Credentials': true,
