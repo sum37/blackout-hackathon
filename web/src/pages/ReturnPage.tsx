@@ -3,7 +3,7 @@ import BackHeader from "../components/BackHeader";
 import TreeCard from "../components/TreeCard";
 import { useEffect, useState } from "react";
 import { getTree } from "../axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface State {
   time: number;
@@ -13,6 +13,7 @@ interface State {
 }
 
 const ReturnPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
   const { time, price, treeId, treeExpUpdate } = state as State;
@@ -35,9 +36,6 @@ const ReturnPage = () => {
     }).catch((e) => console.log(e));
   }, []);
 
-  console.log(points);
-
-
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -45,6 +43,10 @@ const ReturnPage = () => {
     const formattedSeconds = String(remainingSeconds).padStart(2, "0");
     return `${formattedMinutes}:${formattedSeconds}`;
   };
+
+  const handleConfirmClick = () => {
+    navigate("/");
+  }
 
   return (
     <div className="return-page">
@@ -69,7 +71,7 @@ const ReturnPage = () => {
         </div>
       </div>
 
-      <button className="return-confirm">확인</button>
+      <button onClick={handleConfirmClick} className="return-confirm">확인</button>
     </div>
   );
 };

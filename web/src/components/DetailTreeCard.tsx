@@ -26,10 +26,10 @@ interface DetailTreeCardProps {
   const DetailTreeCard = ({ progress, tree_type }: DetailTreeCardProps) => {
     // 단계 계산
     const getStageText = (progress: number): string => {
-      if (progress >= 0 && progress < 25) return "1단계";
-      if (progress >= 25 && progress < 50) return "2단계";
-      if (progress >= 50 && progress < 75) return "3단계";
-      if (progress >= 75 && progress <= 100) return "4단계";
+      if (progress >= 0 && progress < 250) return "1단계";
+      if (progress >= 250 && progress < 500) return "2단계";
+      if (progress >= 500 && progress < 750) return "3단계";
+      if (progress >= 750 && progress <= 1000) return "4단계";
       return "1단계"; // 안전 장치
     };
 
@@ -101,14 +101,14 @@ interface DetailTreeCardProps {
         <div className="detail-stage-text">{stageText}</div>
         <div className="detail-stage-text">{progress}</div> {/*나중에 없애야하는 줄 */}
         <div className="detail-progress-container">
-          <div className="detail-progress-fill" style={{ width: `${progress}%` }} />
+          <div className="detail-progress-fill" style={{ width: `${progress / 10}%` }} />
         </div>
         <div className="detail-progress-labels">
           <span>0</span>
-          <span>25</span>
-          <span>50</span>
-          <span>75</span>
-          <span>100</span>
+          <span>250</span>
+          <span>500</span>
+          <span>750</span>
+          <span>1000</span>
         </div>
       </div>
     );

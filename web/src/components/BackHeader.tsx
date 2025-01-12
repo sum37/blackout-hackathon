@@ -4,15 +4,20 @@ import Logo from "../assets/logo.png";
 
 
 interface BackHeaderProps {
+  prevPath?: string;
   showHeader?: boolean;
 }
 
-const BackHeader = ({ showHeader = true }: BackHeaderProps) => {
+const BackHeader = ({ prevPath, showHeader = true }: BackHeaderProps) => {
   const navigate = useNavigate();
 
   const handleClickBack = () => {
-    console.log("go to back");
-    navigate("/");
+    console.log(prevPath);
+    if (prevPath) {
+      navigate(prevPath);
+    } else {
+      navigate("/");
+    }
   };
 
   return (

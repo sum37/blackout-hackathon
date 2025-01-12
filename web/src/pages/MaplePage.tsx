@@ -32,7 +32,7 @@ const MaplePage = () => {
 
   return (
     <>
-      <BackHeader />
+      <BackHeader prevPath="/my-trees"/>
       <div className="sub-title tree-page-title">단풍나무</div>
       <div className="cards-container">
       {MapleTreeExp !== null ? (

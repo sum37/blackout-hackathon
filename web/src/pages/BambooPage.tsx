@@ -32,7 +32,7 @@ const BambooPage = () => {
 
   return (
     <>
-      <BackHeader />
+      <BackHeader prevPath="/my-trees"/>
       <div className="sub-title tree-page-title">대나무</div>
       <div className="cards-container">
       {bambooTreeExp !== null ? (
