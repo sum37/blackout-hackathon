@@ -9,7 +9,6 @@
   <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white" />
 </p>
 
----
 
 ## 🧪 Slides (발표 자료)
 
@@ -26,7 +25,6 @@
 ![11](https://github.com/user-attachments/assets/0175aac0-7b8b-46e0-b980-43e9fe86070f)
 ![GPT](https://github.com/user-attachments/assets/de8e20d6-2269-40ac-8063-b1b4c91975ba)
 
----
 ## 🧰 Tech Stack
 - **Frontend**: Vite, React, TypeScript, Tailwind 
 - **Backend**: Python 
