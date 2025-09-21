@@ -1,4 +1,17 @@
-# blackout-hackathon
+# Blackout Hackathon — Gamify PM Culture
+
+> **게이미피케이션으로 Personal Mobility 문화를 개선**하기 위한 프로젝트입니다.  
+
+<p align="left">
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white" />
+  <img alt="React" src="https://img.shields.io/badge/React-149ECA?logo=react&logoColor=white" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" />
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white" />
+</p>
+
+---
+
+## 🧪 Slides (발표 자료)
 
 ![1](https://github.com/user-attachments/assets/e6a9fdb2-2ff3-4cd1-8c12-eef6ec00b492)
 ![2](https://github.com/user-attachments/assets/8a669829-6101-4942-8b60-90e3bc1aa383)
@@ -12,3 +25,8 @@
 ![10](https://github.com/user-attachments/assets/76c08f71-2a08-48d8-983d-44273657fbce)
 ![11](https://github.com/user-attachments/assets/0175aac0-7b8b-46e0-b980-43e9fe86070f)
 ![GPT](https://github.com/user-attachments/assets/de8e20d6-2269-40ac-8063-b1b4c91975ba)
+
+---
+## 🧰 Tech Stack
+- **Frontend**: Vite, React, TypeScript, Tailwind 
+- **Backend**: Python 
