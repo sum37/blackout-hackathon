@@ -1,4 +1,4 @@
-# Blackout Hackathon — Gamify PM Culture
+# Blackout Hackathon — GCOO PlanTing
 
 > **게이미피케이션으로 Personal Mobility 문화를 개선**하기 위한 프로젝트입니다.  
 
